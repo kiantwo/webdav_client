@@ -11,6 +11,7 @@ const fileXmlStr = '''<d:propfind xmlns:d='DAV:'>
 				<d:getcontenttype/>
 				<d:getetag/>
 				<d:getlastmodified/>
+        <d:quota-used-bytes/>
 			</d:prop>
 		</d:propfind>''';
 
