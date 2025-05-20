@@ -74,6 +74,11 @@ class WebdavXml {
               size = sizeElements.isNotEmpty
                   ? int.parse(sizeElements.single.text)
                   : 0;
+            } else {
+              final sizeElements = findElements(prop, 'quota-used-bytes');
+              size = sizeElements.isNotEmpty
+                  ? int.parse(sizeElements.single.text)
+                  : 0;
             }
 
             // eTag
