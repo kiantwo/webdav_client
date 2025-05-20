@@ -70,17 +70,11 @@ class WebdavXml {
 
             // size
             int size = 0;
-            if (!isDir) {
-              final sizeElements = findElements(prop, 'getcontentlength');
-              size = sizeElements.isNotEmpty
-                  ? int.parse(sizeElements.single.text)
-                  : 0;
-            } else {
-              final sizeElements = findElements(prop, 'quota-used-bytes');
-              size = sizeElements.isNotEmpty
-                  ? int.parse(sizeElements.single.text)
-                  : 0;
-            }
+            final sizeElements = findElements(
+                prop, !isDir ? 'getcontentlength' : 'quota-used-bytes');
+            size = sizeElements.isNotEmpty
+                ? int.parse(sizeElements.single.text)
+                : 0;
 
             // eTag
             final eTagElements = findElements(prop, 'getetag');
