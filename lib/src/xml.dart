@@ -15,6 +15,7 @@ const fileXmlStr = '''
 				<d:getetag/>
 				<d:getlastmodified/>
         <d:quota-used-bytes/>
+        <oc:fileid />
 			</d:prop>
 		</d:propfind>''';
 
