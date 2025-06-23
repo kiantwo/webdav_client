@@ -64,6 +64,11 @@ class WebdavXml {
               throw newXmlError('xml parse error(405)');
             }
 
+            final fileIdElements = findElements(prop, 'fileid');
+            int fileId = fileIdElements.isNotEmpty
+                ? int.parse(fileIdElements.single.text)
+                : 0;
+
             // mimeType
             final mimeTypeElements = findElements(prop, 'getcontenttype');
             String mimeType =
@@ -100,6 +105,7 @@ class WebdavXml {
             var filePath = path + name + (isDir ? '/' : '');
 
             files.add(File(
+              fileId: fileId,
               path: filePath,
               isDir: isDir,
               name: name,

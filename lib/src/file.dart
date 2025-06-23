@@ -1,4 +1,5 @@
 class File {
+  int? fileId;
   String? path;
   bool? isDir;
   String? name;
@@ -9,6 +10,7 @@ class File {
   DateTime? mTime;
 
   File({
+    this.fileId,
     this.path,
     this.isDir,
     this.name,
