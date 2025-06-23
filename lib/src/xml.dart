@@ -3,7 +3,10 @@ import 'package:xml/xml.dart';
 import 'file.dart';
 import 'utils.dart';
 
-const fileXmlStr = '''<d:propfind xmlns:d='DAV:'>
+const fileXmlStr = '''
+    <d:propfind
+        xmlns:d='DAV:'
+        xmlns:oc='http://owncloud.org/ns'>
 			<d:prop>
 				<d:displayname/>
 				<d:resourcetype/>
@@ -12,7 +15,6 @@ const fileXmlStr = '''<d:propfind xmlns:d='DAV:'>
 				<d:getetag/>
 				<d:getlastmodified/>
         <d:quota-used-bytes/>
-        <oc:fileid />
 			</d:prop>
 		</d:propfind>''';
 
