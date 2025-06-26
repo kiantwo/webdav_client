@@ -1,3 +1,4 @@
+import 'package:webdav_client/src/acl_entry.dart';
 import 'package:xml/xml.dart';
 
 import 'file.dart';
@@ -19,7 +20,6 @@ const fileXmlStr = '''
         <oc:fileid />
         <nc:acl-list />
         <nc:acl-enabled />
-        <nc:acl-can-manage />
 			</d:prop>
 		</d:propfind>''';
 
@@ -110,8 +110,43 @@ class WebdavXml {
             // aclEnabled
             final aclEnabledElements = findElements(prop, 'acl-enabled');
             int aclEnabled = int.parse(aclEnabledElements.single.text);
-            print(aclEnabledElements);
 
+            // aclList
+            final aclListElements = findElements(prop, 'acl-list');
+            List<AclEntry>? aclList;
+
+            if (aclListElements.isNotEmpty) {
+              aclList = [];
+              final aclEntries = aclListElements.single;
+              final aclElements = findElements(aclEntries, 'acl');
+
+              for (var acl in aclElements) {
+                final type =
+                    findElements(acl, 'acl-mapping-type').singleOrNull?.text ??
+                        '';
+                final id =
+                    findElements(acl, 'acl-mapping-id').singleOrNull?.text ??
+                        '';
+                final displayName =
+                    findElements(acl, 'acl-mapping-display-name')
+                            .singleOrNull
+                            ?.text ??
+                        '';
+                final permissionsStr =
+                    findElements(acl, 'acl-permissions').singleOrNull?.text ??
+                        '0';
+
+                int permissions = int.tryParse(permissionsStr) ?? 0;
+
+                aclList.add(AclEntry(
+                  type: type,
+                  id: id,
+                  displayName: displayName,
+                  permissions: permissions,
+                ));
+              }
+              print(aclList);
+            }
             //
             var str = Uri.decodeFull(href);
             var name = path2Name(str);
@@ -127,7 +162,8 @@ class WebdavXml {
                 eTag: eTag,
                 cTime: cTime,
                 mTime: mTime,
-                aclEnabled: aclEnabled));
+                aclEnabled: aclEnabled,
+                aclList: aclList));
             break;
           }
         }

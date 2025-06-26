@@ -1,3 +1,5 @@
+import 'package:webdav_client/src/acl_entry.dart';
+
 class File {
   int? fileId;
   String? path;
@@ -9,6 +11,7 @@ class File {
   DateTime? cTime;
   DateTime? mTime;
   int? aclEnabled;
+  List<AclEntry>? aclList;
 
   File({
     this.fileId,
@@ -21,5 +24,6 @@ class File {
     this.cTime,
     this.mTime,
     this.aclEnabled,
+    this.aclList,
   });
 }
