@@ -6,7 +6,8 @@ import 'utils.dart';
 const fileXmlStr = '''
     <d:propfind
         xmlns:d='DAV:'
-        xmlns:oc='http://owncloud.org/ns'>
+        xmlns:oc='http://owncloud.org/ns'
+        xmlns:nc='http://nextcloud.org/ns'>
 			<d:prop>
 				<d:displayname/>
 				<d:resourcetype/>
@@ -16,6 +17,9 @@ const fileXmlStr = '''
 				<d:getlastmodified/>
         <d:quota-used-bytes/>
         <oc:fileid />
+        <nc:acl-list />
+        <nc:acl-enabled />
+        <nc:acl-can-manage />
 			</d:prop>
 		</d:propfind>''';
 
@@ -67,6 +71,7 @@ class WebdavXml {
               throw newXmlError('xml parse error(405)');
             }
 
+            // fileId
             final fileIdElements = findElements(prop, 'fileid');
             int fileId = fileIdElements.isNotEmpty
                 ? int.parse(fileIdElements.single.text)
@@ -102,22 +107,27 @@ class WebdavXml {
                 ? str2LocalTime(mTimeElements.single.text)
                 : null;
 
+            // aclEnabled
+            final aclEnabledElements = findElements(prop, 'acl-enabled');
+            int aclEnabled = int.parse(aclEnabledElements.single.text);
+            print(aclEnabledElements);
+
             //
             var str = Uri.decodeFull(href);
             var name = path2Name(str);
             var filePath = path + name + (isDir ? '/' : '');
 
             files.add(File(
-              fileId: fileId,
-              path: filePath,
-              isDir: isDir,
-              name: name,
-              mimeType: mimeType,
-              size: size,
-              eTag: eTag,
-              cTime: cTime,
-              mTime: mTime,
-            ));
+                fileId: fileId,
+                path: filePath,
+                isDir: isDir,
+                name: name,
+                mimeType: mimeType,
+                size: size,
+                eTag: eTag,
+                cTime: cTime,
+                mTime: mTime,
+                aclEnabled: aclEnabled));
             break;
           }
         }
