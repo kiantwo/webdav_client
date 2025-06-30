@@ -109,7 +109,7 @@ class WebdavXml {
 
             // aclEnabled
             final aclEnabledElements = findElements(prop, 'acl-enabled');
-            int aclEnabled = int.parse(aclEnabledElements.single.text);
+            int aclEnabled = int.tryParse(aclEnabledElements.single.text) ?? 0;
 
             // aclList
             final aclListElements = findElements(prop, 'acl-list');
