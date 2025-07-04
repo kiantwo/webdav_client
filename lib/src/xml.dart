@@ -145,7 +145,6 @@ class WebdavXml {
                   permissions: permissions,
                 ));
               }
-              print(aclList);
             }
             //
             var str = Uri.decodeFull(href);
