@@ -8,6 +8,7 @@ class File {
   String? eTag;
   DateTime? cTime;
   DateTime? mTime;
+  String? ownerDisplayName;
 
   File({
     this.fileId,
@@ -19,5 +20,6 @@ class File {
     this.eTag,
     this.cTime,
     this.mTime,
+    this.ownerDisplayName,
   });
 }

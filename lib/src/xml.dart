@@ -16,6 +16,7 @@ const fileXmlStr = '''
 				<d:getlastmodified/>
         <d:quota-used-bytes/>
         <oc:fileid />
+        <oc:owner-display-name />
 			</d:prop>
 		</d:propfind>''';
 
@@ -69,37 +70,44 @@ class WebdavXml {
 
             final fileIdElements = findElements(prop, 'fileid');
             int fileId = fileIdElements.isNotEmpty
-                ? int.parse(fileIdElements.single.text)
+                ? int.parse(fileIdElements.single.value ?? '')
                 : 0;
+
+            final ownerDisplayNameElements =
+                findElements(prop, 'owner-display-name');
+            String ownerDisplayName = ownerDisplayNameElements.isNotEmpty
+                ? ownerDisplayNameElements.single.value ?? ''
+                : '';
 
             // mimeType
             final mimeTypeElements = findElements(prop, 'getcontenttype');
-            String mimeType =
-                mimeTypeElements.isNotEmpty ? mimeTypeElements.single.text : '';
+            String mimeType = mimeTypeElements.isNotEmpty
+                ? mimeTypeElements.single.value ?? ''
+                : '';
 
             // size
             int size = 0;
             final sizeElements = findElements(
                 prop, !isDir ? 'getcontentlength' : 'quota-used-bytes');
             size = sizeElements.isNotEmpty
-                ? int.parse(sizeElements.single.text)
+                ? int.parse(sizeElements.single.value ?? '')
                 : 0;
 
             // eTag
             final eTagElements = findElements(prop, 'getetag');
             String eTag =
-                eTagElements.isNotEmpty ? eTagElements.single.text : '';
+                eTagElements.isNotEmpty ? eTagElements.single.value ?? '' : '';
 
             // create time
             final cTimeElements = findElements(prop, 'creationdate');
             DateTime? cTime = cTimeElements.isNotEmpty
-                ? DateTime.parse(cTimeElements.single.text).toLocal()
+                ? DateTime.parse(cTimeElements.single.value ?? '').toLocal()
                 : null;
 
             // modified time
             final mTimeElements = findElements(prop, 'getlastmodified');
             DateTime? mTime = mTimeElements.isNotEmpty
-                ? str2LocalTime(mTimeElements.single.text)
+                ? str2LocalTime(mTimeElements.single.value)
                 : null;
 
             //
@@ -117,6 +125,7 @@ class WebdavXml {
               eTag: eTag,
               cTime: cTime,
               mTime: mTime,
+              ownerDisplayName: ownerDisplayName,
             ));
             break;
           }
