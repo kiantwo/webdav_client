@@ -70,44 +70,43 @@ class WebdavXml {
 
             final fileIdElements = findElements(prop, 'fileid');
             int fileId = fileIdElements.isNotEmpty
-                ? int.parse(fileIdElements.single.value ?? '')
+                ? int.parse(fileIdElements.single.text)
                 : 0;
 
             final ownerDisplayNameElements =
                 findElements(prop, 'owner-display-name');
             String ownerDisplayName = ownerDisplayNameElements.isNotEmpty
-                ? ownerDisplayNameElements.single.value ?? ''
+                ? ownerDisplayNameElements.single.text
                 : '';
 
             // mimeType
             final mimeTypeElements = findElements(prop, 'getcontenttype');
-            String mimeType = mimeTypeElements.isNotEmpty
-                ? mimeTypeElements.single.value ?? ''
-                : '';
+            String mimeType =
+                mimeTypeElements.isNotEmpty ? mimeTypeElements.single.text : '';
 
             // size
             int size = 0;
             final sizeElements = findElements(
                 prop, !isDir ? 'getcontentlength' : 'quota-used-bytes');
             size = sizeElements.isNotEmpty
-                ? int.parse(sizeElements.single.value ?? '')
+                ? int.parse(sizeElements.single.text)
                 : 0;
 
             // eTag
             final eTagElements = findElements(prop, 'getetag');
             String eTag =
-                eTagElements.isNotEmpty ? eTagElements.single.value ?? '' : '';
+                eTagElements.isNotEmpty ? eTagElements.single.text : '';
 
             // create time
             final cTimeElements = findElements(prop, 'creationdate');
             DateTime? cTime = cTimeElements.isNotEmpty
-                ? DateTime.parse(cTimeElements.single.value ?? '').toLocal()
+                ? DateTime.parse(cTimeElements.single.text).toLocal()
                 : null;
 
             // modified time
             final mTimeElements = findElements(prop, 'getlastmodified');
             DateTime? mTime = mTimeElements.isNotEmpty
-                ? str2LocalTime(mTimeElements.single.value)
+                ? str2LocalTime(mTimeElements.single.text)
                 : null;
 
             //
@@ -116,17 +115,16 @@ class WebdavXml {
             var filePath = path + name + (isDir ? '/' : '');
 
             files.add(File(
-              fileId: fileId,
-              path: filePath,
-              isDir: isDir,
-              name: name,
-              mimeType: mimeType,
-              size: size,
-              eTag: eTag,
-              cTime: cTime,
-              mTime: mTime,
-              ownerDisplayName: ownerDisplayName,
-            ));
+                fileId: fileId,
+                path: filePath,
+                isDir: isDir,
+                name: name,
+                mimeType: mimeType,
+                size: size,
+                eTag: eTag,
+                cTime: cTime,
+                mTime: mTime,
+                ownerDisplayName: ownerDisplayName));
             break;
           }
         }
